@@ -2,7 +2,8 @@
 const express = require('express');
 //link routes directory
 const routes = require('./routes');
-
+//require inquirer
+const inquirer = require('inquirer');
 
 //establish PORT for routes
 const PORT = process.env.PORT || 3001;
@@ -20,4 +21,16 @@ app.use(routes);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-  
+
+function promptUser() {
+    inquirer
+    .prompt([
+
+    ])
+    .then((answers) => {
+
+    })
+    .catch((error) => {
+
+    });
+}
