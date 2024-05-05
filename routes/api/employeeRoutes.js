@@ -1,23 +1,7 @@
-//require dotenv to access env variables
-require('dotenv').config();
 //create an express router object
 const router = require('express').Router();
-//create a pool connection to the db
-const { Pool } = require('pg');
-
-//create a pool object to handle requests to the db
-const pool = new Pool(
-    {
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      host: 'localhost'
-    },
-    console.log(`Connected to the employee_db database.`)
-  )
-
-//connect the pool object to the db passed in initialization
-pool.connect();
+//import pool object
+const pool = require('../../config/connection.js');
 
 //all routes start with /api/employee/
 
@@ -36,13 +20,13 @@ router.get('/all', (req, res) => {
             res.status(err).json({error:err.message});
         }
         res.json({
-            message: 'success',
+            message: 'employee success',
             data: rows
         })
     });
 });
 
-router.post('/addEmp', (req, res) => {
+router.post('/add', (req, res) => {
     pool.query('INSERT into employee (first_name) VALUES ($1)', [req.body.first_name], function (err) {
         if(err){
             res.status(err).json({error:err.message});

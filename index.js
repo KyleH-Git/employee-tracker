@@ -22,15 +22,30 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 
-function promptUser() {
+
     inquirer
     .prompt([
+        {
+            type:'list',
+            name: 'choice',
+            message: 'What would you like to do?',
+            choices: [
+                'View all Employees',
+                'Add Employee', 
+                'Updated Employee Role',
+                'View All Roles',
+                'Add Role',
+                'View All Departments',
+                'Add Department',
+                'Quit',
+                ]
 
+        }
     ])
     .then((answers) => {
-
+        console.log(answers);
     })
     .catch((error) => {
 
     });
-}
+
