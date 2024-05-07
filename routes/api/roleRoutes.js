@@ -15,5 +15,16 @@ router.get('/all', (req, res) => {
         })
     });
 });
+
+router.post('/add', (req, res) => {
+    console.log(req.body);
+    pool.query('INSERT INTO role(title, salary, department) VALUES($1, $2, $3) RETURNING title, id', 
+    [req.body.roleTitle, req.body.roleSalary, req.body.roleDepartment ], function (err, rows){
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows)
+    });
+});
 //export the router so it can be linked in other files
 module.exports = router;

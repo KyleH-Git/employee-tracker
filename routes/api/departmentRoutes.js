@@ -4,6 +4,8 @@ const router = require('express').Router();
 const pool = require('../../config/connection.js');
 
 //all routes start with /api/department/
+
+//returns all data from department table
 router.get('/all', (req, res) => {
     pool.query('SELECT * FROM department', function (err, {rows}){
         if(err){
@@ -15,5 +17,16 @@ router.get('/all', (req, res) => {
         })
     });
 });
+
+router.post('/add', (req, res) => {
+    console.log(req.body);
+    pool.query('INSERT INTO department(name) VALUES($1) RETURNING name, id', [req.body.departmentName], function (err, rows){
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows)
+    });
+});
+
 //export the router so it can be linked in other files
 module.exports = router;

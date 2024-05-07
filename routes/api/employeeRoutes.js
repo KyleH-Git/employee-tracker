@@ -5,15 +5,6 @@ const pool = require('../../config/connection.js');
 
 //all routes start with /api/employee/
 
-router.get('/', async (req, res) => {
-    try{
-        res.status(200).json({message: 'Route reached'});
-        console.log('Route reached');
-    }catch (err){
-        res.status(500).json(err, 'Internal server error');
-    }
-})
-
 router.get('/all', (req, res) => {
     pool.query('SELECT * FROM employee', function (err, {rows}){
         if(err){
@@ -27,16 +18,16 @@ router.get('/all', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    pool.query('INSERT into employee (first_name) VALUES ($1)', [req.body.first_name], function (err) {
+    pool.query('INSERT into employee (first_name, last_name, role, manager) VALUES ($1, $2, $3, $4) RETURNING first_name, last_name, id', 
+    [req.body.employeeFirst, req.body.employeeLast, req.body.employeeRole, req.body.employeeManager], function (err, rows) {
         if(err){
             res.status(err).json({error:err.message});
         }
-        res.json({
-            message: 'success',
-            data: req.body
-        })
+        res.json(rows);
     });
 });
+
+// route.put('/update', (req, res) => {});
 
 //export the router so it can be linked in other files
 module.exports = router;
