@@ -83,6 +83,7 @@ function getUserInput() {
                     break;
                 case 'Update Employee Role':
                     console.log('update employee');
+                    await employee.update();
                     break;
                 default:
                     console.log('error');

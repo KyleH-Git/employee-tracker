@@ -7,7 +7,7 @@ const pool = require('../../config/connection.js');
 
 //returns all data from department table
 router.get('/all', (req, res) => {
-    pool.query('SELECT * FROM department', function (err, {rows}){
+    pool.query('SELECT department.id, department.name FROM department', function (err, {rows}){
         if(err){
             res.status(err).json({error:err.message});
         }

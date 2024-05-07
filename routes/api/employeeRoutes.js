@@ -27,7 +27,9 @@ router.post('/add', (req, res) => {
     });
 });
 
-// route.put('/update', (req, res) => {});
+route.put('/update', (req, res) => {
+    pool.query('UPDATE into employee (first_name, last_name, role, manager) VALUES ($1, $2, $3, $4) RETURNING first_name, last_name, id')
+});
 
 //export the router so it can be linked in other files
 module.exports = router;
