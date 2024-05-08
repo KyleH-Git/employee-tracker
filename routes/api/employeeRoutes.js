@@ -27,8 +27,15 @@ router.post('/add', (req, res) => {
     });
 });
 
-route.put('/update', (req, res) => {
-    pool.query('UPDATE into employee (first_name, last_name, role, manager) VALUES ($1, $2, $3, $4) RETURNING first_name, last_name, id')
+router.put('/update', (req, res) => {
+
+    pool.query('UPDATE employee SET (role, manager) = ($1, $2) WHERE employee.id = ($3) RETURNING first_name, last_name, role, manager',
+    [req.body.employeeRole, req.body.employeeManager, req.body.employeeUpdate], function (err, rows) {
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows);
+    });
 });
 
 //export the router so it can be linked in other files
