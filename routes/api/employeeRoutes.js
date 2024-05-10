@@ -17,6 +17,27 @@ router.get('/all', (req, res) => {
     });
 });
 
+router.get('/manager/:id', (req, res) => {
+    console.log(req.params.id);
+    pool.query('SELECT (first_name, last_name) FROM employee WHERE employee.manager = ($1);', 
+    [req.params.id], function (err, rows){
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows);
+    });
+});
+
+router.get('/department/:id', (req, res) => {
+    pool.query('SELECT * FROM employee JOIN role ON employee.role = role.id JOIN department ON role.department = department.id WHERE department.id = ($1);', 
+    [req.params.id], function (err, rows){
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows);
+    });
+});
+
 router.post('/add', (req, res) => {
     pool.query('INSERT into employee (first_name, last_name, role, manager) VALUES ($1, $2, $3, $4) RETURNING first_name, last_name, id', 
     [req.body.employeeFirst, req.body.employeeLast, req.body.employeeRole, req.body.employeeManager], function (err, rows) {
@@ -36,6 +57,15 @@ router.put('/update', (req, res) => {
         }
         res.json(rows);
     });
+});
+
+router.delete('/delete/:id', (req,res) => {
+    pool.query('DELETE FROM employee WHERE employee.id = ($1) RETURNING first_name, last_name', [req.params.id], function (err, rows){
+        if(err){
+            res.status(err).json({error:err.message});
+        }
+        res.json(rows)
+    })
 });
 
 //export the router so it can be linked in other files
