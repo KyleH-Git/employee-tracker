@@ -31,6 +31,7 @@ const role = new Role;
 const employee = new Employee;
 
 async function getUserInput() {
+    console.log('\n\n\n\n\n');
     inquirer
         .prompt([
             {
@@ -63,12 +64,15 @@ async function getUserInput() {
                     process.exit(1);
                 case 'View All Departments':
                     await department.getAll();
+                    getUserInput();
                     break;
                 case 'View All Roles':
                     await role.getAll();
+                    getUserInput();
                     break;
                 case 'View All Employees':
                     await employee.getAll();
+                    getUserInput();
                     break;
                 case 'Add Department':
                     await department.addNew();
@@ -84,9 +88,11 @@ async function getUserInput() {
                     break;
                 case 'View Employees By Manager':
                     await employee.getByManager();
+                    getUserInput();
                     break;
                 case 'View Employees By Department':
                     await employee.getByDepartment();
+                    getUserInput();
                     break;
                 case 'Delete Department':
                     await department.delete();
@@ -106,6 +112,7 @@ async function getUserInput() {
             }
             
         });
+
 }
 
 getUserInput();

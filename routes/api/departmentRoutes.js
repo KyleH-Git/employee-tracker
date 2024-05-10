@@ -29,7 +29,6 @@ router.get('/budget/:id', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    console.log(req.body);
     pool.query('INSERT INTO department(name) VALUES($1) RETURNING name, id', [req.body.departmentName], function (err, rows){
         if(err){
             res.status(err).json({error:err.message});

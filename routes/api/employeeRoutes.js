@@ -6,7 +6,7 @@ const pool = require('../../config/connection.js');
 //all routes start with /api/employee/
 
 router.get('/all', (req, res) => {
-    pool.query('SELECT * FROM employee', function (err, {rows}){
+    pool.query('SELECT employee.id, first_name, last_name, CONCAT(first_name, \' \', last_name) as manager, title, salary, department.name as department FROM employee JOIN role ON employee.role = role.id JOIN department on role.department = department.id', function (err, {rows}){
         if(err){
             res.status(err).json({error:err.message});
         }
@@ -18,7 +18,6 @@ router.get('/all', (req, res) => {
 });
 
 router.get('/manager/:id', (req, res) => {
-    console.log(req.params.id);
     pool.query('SELECT (first_name, last_name) FROM employee WHERE employee.manager = ($1);', 
     [req.params.id], function (err, rows){
         if(err){
@@ -49,7 +48,6 @@ router.post('/add', (req, res) => {
 });
 
 router.put('/update', (req, res) => {
-
     pool.query('UPDATE employee SET (role, manager) = ($1, $2) WHERE employee.id = ($3) RETURNING first_name, last_name, role, manager',
     [req.body.employeeRole, req.body.employeeManager, req.body.employeeUpdate], function (err, rows) {
         if(err){

@@ -5,7 +5,7 @@ const pool = require('../../config/connection.js');
 
 //all routes start with /api/role/
 router.get('/all', (req, res) => {
-    pool.query('SELECT * FROM role', function (err, {rows}){
+    pool.query('SELECT role.id, title, salary, department.name as department FROM role JOIN department ON role.department = department.id', function (err, {rows}){
         if(err){
             res.status(err).json({error:err.message});
         }
